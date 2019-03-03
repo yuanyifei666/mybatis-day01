@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuan.mybatisday01.mapper.OrdersMapper">
+
+    <resultMap id="base_orders" type="Orders">
+        <id property="oid" column="oid"></id>
+        <result property="number" column="number"></result>
+        <result property="createTime" column="createtime"></result>
+        <result property="note" column="note"></result>
+        <!--关联该订单的用户-->
+        <association property="user" javaType="User">
+            <id property="id" column="id"></id>
+            <result property="name" column="name"></result>
+        </association>
+
+    </resultMap>
+
+    <parameterMap id="base_user_param" type="User">
+        <parameter property="id" ></parameter>
+
+    </parameterMap>
+
+
+
+
+   <select id="findOrders" resultMap="base_orders">
+      select * from orders left join user on user_id = id;
+   </select>
+
+</mapper>

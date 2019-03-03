@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuan.mybatisday01.mapper.UserMapper">
+
+    <resultMap id="base_user" type="User">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="password" column="password"></result>
+        <!--映射该用户下的所有订单-->
+        <collection property="orders" ofType="Orders" column="user_id">
+            <id property="oid" column="oid"></id>
+            <result property="number" column="number"></result>
+            <result property="createTime" column="createtime"></result>
+            <result property="note" column="note"></result>
+        </collection>
+
+    </resultMap>
+
+    <!--mybatis一对多的使用-->
+    <select id="findUserById" parameterType="int" resultMap="base_user">
+
+       select * from user left join orders on id = user_id where id = #{id};
+    </select>
+
+    <select id="findUesrs" resultType="User">
+		select * from user
+    </select>
+
+    <parameterMap id="user_params" type="java.util.Map">
+        <parameter property="name"></parameter>
+        <parameter property="min"></parameter>
+        <parameter property="max"></parameter>
+    </parameterMap>
+    <!--使用parameterMap来接收多个参数-->
+    <select id="findUserByParams" parameterMap="user_params" resultType="User">
+        select * from user where name like concat('%',#{name},'%')
+          and id between #{min} and #{max};
+    </select>
+
+</mapper>
