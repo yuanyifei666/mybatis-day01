@@ -39,4 +39,8 @@
           and id between #{min} and #{max};
     </select>
 
+    <select id="findByName" parameterType = "String" resultType="Uesr">
+          select * from user where name like concat('%',#{name},'%');
+    </select>
+
 </mapper>
